@@ -54,27 +54,6 @@ local fake_label = 0
 local netG = createNetG(opt)
 local netD = createNetD(opt)
 
--- input is (nc) x 64 x 64
-netD:add(SpatialConvolution(nc, ndf, 4, 4, 2, 2, 1, 1))
-netD:add(nn.LeakyReLU(0.2, true))
--- state size: (ndf) x 32 x 32
-netD:add(SpatialConvolution(ndf, ndf * 2, 4, 4, 2, 2, 1, 1))
-netD:add(SpatialBatchNormalization(ndf * 2)):add(nn.LeakyReLU(0.2, true))
--- state size: (ndf*2) x 16 x 16
-netD:add(SpatialConvolution(ndf * 2, ndf * 4, 4, 4, 2, 2, 1, 1))
-netD:add(SpatialBatchNormalization(ndf * 4)):add(nn.LeakyReLU(0.2, true))
--- state size: (ndf*4) x 8 x 8
-netD:add(SpatialConvolution(ndf * 4, ndf * 8, 4, 4, 2, 2, 1, 1))
-netD:add(SpatialBatchNormalization(ndf * 8)):add(nn.LeakyReLU(0.2, true))
--- state size: (ndf*8) x 4 x 4
-netD:add(SpatialConvolution(ndf * 8, 1, 4, 4))
-netD:add(nn.Sigmoid())
--- state size: 1 x 1 x 1
-netD:add(nn.View(1):setNumInputDims(3))
--- state size: 1
-
-netD:apply(weights_init)
-
 local criterion = nn.BCECriterion()
 ---------------------------------------------------------------------------
 optimStateG = {
