@@ -31,7 +31,7 @@ local function createModel(opt)
       module:add(SBatchNorm(nInputPlane))
       module:add(ReLU(true))
       if stride == 2 then
-        convs:add(SpatialFullConvolution(nInputPlane,nOutputPlane, 3,3, 2,2, 1,1, 1,1))
+        convs:add(FullConvolution(nInputPlane,nOutputPlane, 3,3, 2,2, 1,1, 1,1))
       else
         convs:add(Convolution(nInputPlane,nOutputPlane, 3,3, 1,1, 1,1))
       end
