@@ -87,7 +87,7 @@ local function createModel(opt)
       model:add(SBatchNorm(nStages[5]))
       model:add(ReLU(true))
       model:add(Convolution(nStages[5], 3, 1,1, 1,1)) -- one conv at the end (spatial size: 64x64)
-      model:add(SBatchNorm(nStages[5]))
+      model:add(SBatchNorm(3))
       model:add(nn.Tanh())
    end
 
