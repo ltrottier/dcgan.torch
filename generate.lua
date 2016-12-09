@@ -12,11 +12,16 @@ opt = {
     name = 'generation1',  -- name of the file saved
     gpu = 1,               -- gpu mode. 0 = CPU, 1 = GPU
     display = 1,           -- Display image: 0 = false, 1 = true
-    nz = 100,              
+    nz = 100,
 }
 for k,v in pairs(opt) do opt[k] = tonumber(os.getenv(k)) or os.getenv(k) or opt[k] end
 print(opt)
 if opt.display == 0 then opt.display = false end
+
+if opt.gpu > 0 then
+    require 'cunn'
+    require 'cudnn'
+end
 
 assert(net ~= '', 'provide a generator model')
 
@@ -66,8 +71,6 @@ end
 
 local sample_input = torch.randn(2,100,1,1)
 if opt.gpu > 0 then
-    require 'cunn'
-    require 'cudnn'
     net:cuda()
     cudnn.convert(net, cudnn)
     noise = noise:cuda()
